@@ -19,3 +19,21 @@
         font-size: 16px;
     }
 }
+
+.navbar{
+    &-link{
+        color: black;
+        text-decoration: none;
+        font-size: 20px;
+
+        &.active{
+            color: indigo;
+            text-decoration: underline;
+            text-underline-position: under;
+        }
+    }
+
+    &-logo{
+        font-size: 28px;
+    }
+}

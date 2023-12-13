@@ -1,5 +1,5 @@
-import { Navbar, Nav, Card, Button, Container, Row, Col } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { Nav, Card, Button, Container, Row, Col } from 'react-bootstrap';
+import { CustomNavbar } from '../components/CustomNavbar';
 import './MainPage.scss'
 import { useContext } from 'react';
 import { ToastContext } from '../context/ToastProvider';
@@ -21,19 +21,7 @@ export default function MainPage(){
 
   return (
     <div className="main page">
-        <Navbar className='navbar'>
-          <Navbar.Brand>
-            <Link className='navbar-link navbar-logo'>Sepul'ka Shop</Link>
-          </Navbar.Brand>
-          <Nav className="ms-auto">
-            <Nav.Link>
-                <Link className='navbar-link'>Cart</Link>
-            </Nav.Link>
-            <Nav.Link>
-                <Link className='navbar-link'>Orders</Link>
-            </Nav.Link>
-          </Nav>
-        </Navbar>
+        <CustomNavbar/>
         <Container className='products mt-5'>
             <Row>
                 <Col md={3} xs={4}></Col>
