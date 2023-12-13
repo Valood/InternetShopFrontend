@@ -20,7 +20,7 @@ export default function Login(){
 
     return (
         <div className="login page m-auto" onSubmit={handleLogin}>
-            <h2 className="login-title mb-3">Авторизация</h2>
+            <h2 className="login-title mb-3">Вход</h2>
             <Card className="login-card">
                 <Card.Body>
                     <Form className="d-flex flex-column gap-2">

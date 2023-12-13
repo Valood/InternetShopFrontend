@@ -51,7 +51,7 @@ export default function Registration(){
                             />
                         </Form.Group>
                         <Button className="mt-3" variant="primary" type="submit">
-                            Войти
+                            Зарегистририроваться
                         </Button>
                     </Form>
                 </Card.Body>
