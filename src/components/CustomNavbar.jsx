@@ -26,6 +26,9 @@ export function CustomNavbar(){
                 <div>
                      <NavLink to='/orders' className={({isActive}) => ['navbar-link', isActive ? 'active' : ''].join(' ')}>Мои заказы</NavLink>
                 </div>
+                <div>
+                     <NavLink to='/create-product' className={({isActive}) => ['navbar-link', isActive ? 'active' : ''].join(' ')}>Создать продукт</NavLink>
+                </div>
                 <div className="d-flex align-items-center">
                     <p className="m-0">{localStorage.getItem('name')}</p>
                 </div>
