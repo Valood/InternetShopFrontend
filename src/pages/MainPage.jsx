@@ -5,12 +5,17 @@ import { useContext, useEffect, useMemo, useState } from 'react';
 import { ToastContext } from '../context/ToastProvider';
 import useAuthGuard from '../hooks/useAuthGuard';
 import { http } from '../http/http';
+import { useDispatch, useSelector } from 'react-redux';
+import { productSlice } from '../store/Reducers/productReducer';
 
 export default function MainPage(){
   useAuthGuard()
 
   const {handleSuccessAction} = useContext(ToastContext)
-  const [products, setProducts] = useState([])
+  const dispatch = useDispatch()
+  const {products} = useSelector(state => state.productSlice)
+  const {setProducts} = productSlice.actions
+
   const [filters, setFilters] = useState({
     name: null,
     price: null
@@ -19,7 +24,7 @@ export default function MainPage(){
   useEffect(() => {
     const fetchProducts = async() => (await http.get('/api/products')).data
     fetchProducts()
-      .then(data => setProducts(data))
+      .then(data => dispatch(setProducts(data)))
   }, [])
 
   const filteredProducts = useMemo(() => products.filter(product => (!filters.name || product.name.toLocaleLowerCase().includes(filters.name.toLocaleLowerCase())) && 

@@ -6,6 +6,7 @@ import MainPage from './pages/MainPage'
 import ToastProvider from './context/ToastProvider'
 import Cart from './pages/Cart'
 import OrdersHistory from './pages/OrdersHistory'
+import CreateProduct from './pages/CreateProduct'
 import AuthGuard from './hooks/useAuthGuard'
 
 function App() {
@@ -15,11 +16,12 @@ function App() {
       <ToastProvider>
         <BrowserRouter>
           <Routes>
-            <Route path='/login' element={<Login/>}/>
-            <Route path='/registration' element={<Registration/>}/>
-            <Route path='/' element={<MainPage/>}/>
-            <Route path='/cart' element={<Cart/>}/>
-            <Route path='/orders' element={<OrdersHistory/>}/>
+            <Route path='/login' element={<Login />} />
+            <Route path='/registration' element={<Registration />} />
+            <Route path='/' element={<MainPage />} />
+            <Route path='/cart' element={<Cart />} />
+            <Route path='/orders' element={<OrdersHistory />} />
+            <Route path='/create-product' element={<CreateProduct />} />
           </Routes>
         </BrowserRouter>
       </ToastProvider>

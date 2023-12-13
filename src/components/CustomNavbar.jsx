@@ -21,10 +21,10 @@ export function CustomNavbar(){
             </Navbar.Brand>
             <Nav className="ms-auto d-flex gap-3">
                 <div>
-                    <NavLink to='/cart' className={({isActive}) => ['navbar-link', isActive ? 'active' : ''].join(' ')}>Cart</NavLink>
+                    <NavLink to='/cart' className={({isActive}) => ['navbar-link', isActive ? 'active' : ''].join(' ')}>Корзина</NavLink>
                 </div>
                 <div>
-                     <NavLink to='/orders' className={({isActive}) => ['navbar-link', isActive ? 'active' : ''].join(' ')}>Orders</NavLink>
+                     <NavLink to='/orders' className={({isActive}) => ['navbar-link', isActive ? 'active' : ''].join(' ')}>Мои заказы</NavLink>
                 </div>
                 <div className="d-flex align-items-center">
                     <p className="m-0">{localStorage.getItem('name')}</p>
