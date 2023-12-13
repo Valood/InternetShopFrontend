@@ -2,13 +2,16 @@ import { useState } from "react";
 import { Form, Button, Card } from "react-bootstrap";
 import {http} from "../http/http";
 import './Login.scss'
+import { useNavigate } from "react-router-dom";
 
 export default function Registration(){
-    const [user, setUser] = useState({});
+    const [userData, setUserData] = useState({});
+    const navigate = useNavigate()
 
     const handleLogin = (event) => {
         event.preventDefault()
-        http.post('/auth/registration', user)
+        http.post('/auth/registration', userData)
+        navigate('/login')
     }
 
     return (
@@ -22,8 +25,8 @@ export default function Registration(){
                             <Form.Control
                                 type="email"
                                 placeholder="Введите e-mail"
-                                value={user.email}
-                                onChange={(e) => setUser({...user, email: e.target.value})}
+                                value={userData.email}
+                                onChange={(e) => setUserData({...userData, email: e.target.value})}
                                 required
                             />
                         </Form.Group>
@@ -32,8 +35,8 @@ export default function Registration(){
                             <Form.Control
                                 type="text"
                                 placeholder="Введите имя пользователя "
-                                value={user.name}
-                                onChange={(e) => setUser({...user, name: e.target.value})}
+                                value={userData.name}
+                                onChange={(e) => setUserData({...userData, name: e.target.value})}
                                 required
                             />
                         </Form.Group>
@@ -42,8 +45,8 @@ export default function Registration(){
                             <Form.Control
                                 type="password"
                                 placeholder="Введите пароль"
-                                value={user.password}
-                                onChange={(e) => setUser({...user, password: e.target.value})}
+                                value={userData.password}
+                                onChange={(e) => setUserData({...userData, password: e.target.value})}
                                 required
                             />
                         </Form.Group>

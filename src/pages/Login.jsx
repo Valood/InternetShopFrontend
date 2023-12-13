@@ -1,14 +1,21 @@
 import { useState } from "react";
 import { Form, Button, Card } from "react-bootstrap";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import './Login.scss'
+import { http } from "../http/http";
+import { userSlice } from './../store/Reducers/userReducer'
 
 export default function Login(){
-    const [user, setUser] = useState({});
+    const {setUser} = userSlice.actions
+    const navigate = useNavigate()
 
-    const handleLogin = (event) => {
+    const [userData, setUserData] = useState({});
+
+    const handleLogin = async(event) => {
         event.preventDefault()
-        
+        const user = await http.post('/auth/login', userData);
+        setUser(user)
+        navigate('/')
     }
 
     return (
@@ -22,8 +29,8 @@ export default function Login(){
                             <Form.Control
                                 type="email"
                                 placeholder="Ваш e-mail"
-                                value={user.email}
-                                onChange={(e) => setUser({...user, email: e.target.value})}
+                                value={userData.email}
+                                onChange={(e) => setUserData({...userData, email: e.target.value})}
                                 required
                             />
                         </Form.Group>
@@ -32,8 +39,8 @@ export default function Login(){
                             <Form.Control
                                 type="password"
                                 placeholder="Ваш пароль"
-                                value={user.password}
-                                onChange={(e) => setUser({...user, password: e.target.value})}
+                                value={userData.password}
+                                onChange={(e) => setUserData({...userData, password: e.target.value})}
                                 required
                             />
                         </Form.Group>

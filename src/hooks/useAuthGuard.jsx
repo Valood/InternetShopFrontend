@@ -7,6 +7,8 @@ export default function useAuthGuard(){
     const navigate = useNavigate()
 
     useEffect(() => {
-        navigate('/login')
-    })
+        if(!user){
+            navigate('/login')
+        }
+    }, [user])
 }

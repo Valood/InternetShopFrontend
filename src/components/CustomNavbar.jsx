@@ -8,15 +8,15 @@ export function CustomNavbar(){
                 <NavLink to='/' className='navbar-link navbar-logo'>Sepul'ka Shop</NavLink>
             </Navbar.Brand>
             <Nav className="ms-auto">
-            <Nav.Link>
+                <div>
                     <NavLink to='/login' className={({isActive}) => ['navbar-link', isActive ? 'active' : ''].join(' ')}>Вход</NavLink>
-                </Nav.Link>
-                <Nav.Link>
+                </div>
+                <div>
                     <NavLink to='/cart' className={({isActive}) => ['navbar-link', isActive ? 'active' : ''].join(' ')}>Cart</NavLink>
-                </Nav.Link>
-                <Nav.Link>
+                </div>
+                <div>
                      <NavLink to='/orders' className={({isActive}) => ['navbar-link', isActive ? 'active' : ''].join(' ')}>Orders</NavLink>
-                </Nav.Link>
+                </div>
             </Nav>
         </Navbar>
     )
