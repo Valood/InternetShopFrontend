@@ -1,0 +1,29 @@
+.navbar{
+    &-link{
+        color: black;
+        text-decoration: none;
+        font-size: 20px;
+    }
+
+    &-logo{
+        font-size: 28px;
+    }
+}
+
+.products{
+
+    &-title{
+        text-align: center;
+    }
+
+    &-grid{
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
+        justify-content: center;
+        gap: 8px;
+    }
+
+    &-card{
+        width: 100%;
+    }
+}
