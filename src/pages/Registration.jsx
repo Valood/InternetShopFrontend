@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { Form, Button, Card } from "react-bootstrap";
+import {http} from "../http/http";
 import './Login.scss'
 
 export default function Registration(){
@@ -7,7 +8,7 @@ export default function Registration(){
 
     const handleLogin = (event) => {
         event.preventDefault()
-        
+        http.post('/auth/registration', user)
     }
 
     return (
@@ -31,8 +32,8 @@ export default function Registration(){
                             <Form.Control
                                 type="text"
                                 placeholder="Введите имя пользователя "
-                                value={user.username}
-                                onChange={(e) => setUser({...user, username: e.target.value})}
+                                value={user.name}
+                                onChange={(e) => setUser({...user, name: e.target.value})}
                                 required
                             />
                         </Form.Group>
