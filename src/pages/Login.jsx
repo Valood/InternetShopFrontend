@@ -4,8 +4,10 @@ import { Link, useNavigate } from "react-router-dom";
 import './Login.scss'
 import { http } from "../http/http";
 import { userSlice } from './../store/Reducers/userReducer'
+import { useDispatch } from "react-redux";
 
 export default function Login(){
+    const dispacth = useDispatch()
     const {setUser} = userSlice.actions
     const navigate = useNavigate()
 
@@ -13,8 +15,10 @@ export default function Login(){
 
     const handleLogin = async(event) => {
         event.preventDefault()
-        const user = await http.post('/auth/login', userData);
-        setUser(user)
+        const user = (await http.post('/auth/login', userData)).data;
+        localStorage.setItem('token', user.token)
+        localStorage.setItem('name', user.name)
+        dispacth(setUser(user))
         navigate('/')
     }
 
