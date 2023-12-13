@@ -2,9 +2,12 @@ import { Card, Col, Container, Row, Form } from "react-bootstrap";
 import { CustomNavbar } from "../components/CustomNavbar";
 import { useState } from "react";
 import './Cart.scss'
+import useAuthGuard from "../hooks/useAuthGuard";
 
 
 export default function Cart(){
+    useAuthGuard()
+    
     const [cartItems, setCartItems] = useState([
         { id: 1, name: 'Product 1', price: 19.99, quantity: 2 },
         { id: 2, name: 'Product 2', price: 29.99, quantity: 1 },
