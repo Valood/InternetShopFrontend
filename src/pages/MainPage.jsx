@@ -1,29 +1,29 @@
 import { Nav, Card, Button, Container, Row, Col, Form } from 'react-bootstrap';
 import { CustomNavbar } from '../components/CustomNavbar';
 import './MainPage.scss'
-import { useContext, useMemo, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import { ToastContext } from '../context/ToastProvider';
 import useAuthGuard from '../hooks/useAuthGuard';
+import { http } from '../http/http';
 
 export default function MainPage(){
   useAuthGuard()
 
   const {handleSuccessAction} = useContext(ToastContext)
-  const products = [
-    { id: 1, name: 'Product 1', price: 19.99 },
-    { id: 2, name: 'Product 2', price: 29.99 },
-    { id: 3, name: 'Product 3', price: 39.99 },
-    { id: 4, name: 'Product 1', price: 19.99 },
-    { id: 5, name: 'Product 2', price: 29.99 },
-    { id: 6, name: 'Product 3', price: 39.99 },
-  ];
+  const [products, setProducts] = useState([])
   const [filters, setFilters] = useState({
     name: null,
     price: null
   })
 
+  useEffect(() => {
+    const fetchProducts = async() => (await http.get('/api/products')).data
+    fetchProducts()
+      .then(data => setProducts(data))
+  }, [])
+
   const filteredProducts = useMemo(() => products.filter(product => (!filters.name || product.name.toLocaleLowerCase().includes(filters.name.toLocaleLowerCase())) && 
-    (!filters.price || (product.price >= 0 && product.price <= filters.price))), [filters])
+    (!filters.price || (product.price >= 0 && product.price <= filters.price))), [filters, products])
 
   const handleAddToCart = (product) => {
     handleSuccessAction('Добавлено в корзину')
@@ -46,9 +46,10 @@ export default function MainPage(){
                     </Form.Group>
                     <Form.Group>
                       <Form.Label>Максимальная цена товара</Form.Label>
-                      <Form.Range
-                        value={filters.price}
-                        onChange={(event) => setFilters({...filters, price: event.target.value})}
+                      <Form.Control
+                        type='number'
+                        defaultValue={filters.price}
+                        onChange={(event) => setFilters({...filters, price: +event.target.value})}
                       />
                     </Form.Group>
                   </Form>
@@ -60,8 +61,8 @@ export default function MainPage(){
                             <Card key={product.id} className='products-card'>
                             <Card.Body>
                                 <Card.Title>{product.name}</Card.Title>
-                                <Card.Text>Price: ${product.price}</Card.Text>
-                                <Button variant="primary" onClick={() => handleAddToCart(product)}>Add to Cart</Button>
+                                <Card.Text>Стоимость: {product.price} &#8381;</Card.Text>
+                                <Button variant="primary" onClick={() => handleAddToCart(product)}>Добавить в корзину</Button>
                             </Card.Body>
                             </Card>
                         ))}
