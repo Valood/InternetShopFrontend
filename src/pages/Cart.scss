@@ -1,0 +1,29 @@
+.cart{
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+
+    &-title{
+        text-align: center;
+    }
+
+    &-container{
+        flex-grow: 1;
+    }
+
+    &-inputNumber{
+        width: 70px;
+    }
+
+    &-list{
+        padding-right: 16px;
+        border-right: 1px solid gray;
+    }
+}
+
+.overall{
+    
+    &-property{
+        height: 20px;
+    }
+}
