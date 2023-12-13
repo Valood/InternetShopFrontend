@@ -5,6 +5,7 @@ import Registration from './pages/Registration'
 import MainPage from './pages/MainPage'
 import ToastProvider from './context/ToastProvider'
 import Cart from './pages/Cart'
+import OrdersHistory from './pages/OrdersHistory'
 
 function App() {
 
@@ -17,6 +18,7 @@ function App() {
             <Route path='/registration' element={<Registration/>}/>
             <Route path='/' element={<MainPage/>}/>
             <Route path='/cart' element={<Cart/>}/>
+            <Route path='/orders' element={<OrdersHistory/>}/>
           </Routes>
         </BrowserRouter>
       </ToastProvider>
