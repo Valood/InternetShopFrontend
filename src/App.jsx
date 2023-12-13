@@ -6,6 +6,7 @@ import MainPage from './pages/MainPage'
 import ToastProvider from './context/ToastProvider'
 import Cart from './pages/Cart'
 import OrdersHistory from './pages/OrdersHistory'
+import AuthGuard from './hooks/useAuthGuard'
 
 function App() {
 

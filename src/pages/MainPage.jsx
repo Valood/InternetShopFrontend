@@ -3,8 +3,11 @@ import { CustomNavbar } from '../components/CustomNavbar';
 import './MainPage.scss'
 import { useContext } from 'react';
 import { ToastContext } from '../context/ToastProvider';
+import useAuthGuard from '../hooks/useAuthGuard';
 
 export default function MainPage(){
+  useAuthGuard()
+
   const {handleSuccessAction} = useContext(ToastContext)
   const products = [
     { id: 1, name: 'Product 1', price: 19.99 },
