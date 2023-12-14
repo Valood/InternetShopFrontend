@@ -22,7 +22,7 @@ export default function ProductPage() {
       <Container className="products mt-5">
         <Row className="mb-5">
           <Col md={3} xs={4}>
-            <img src={product?.image} />
+            {/* <img src={product?.image} /> */}
           </Col>
           <Col md={9} xs={8}>
             {products.map((product) => (
