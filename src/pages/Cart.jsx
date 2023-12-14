@@ -1,17 +1,33 @@
-import { Card, Col, Container, Row, Form } from "react-bootstrap";
+import { Card, Col, Container, Row, Form, Button } from "react-bootstrap";
 import { CustomNavbar } from "../components/CustomNavbar";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import './Cart.scss'
 import useAuthGuard from "../hooks/useAuthGuard";
+import { useDispatch, useSelector } from "react-redux";
+import {cartSlice} from "../store/Reducers/cartSlice";
+import { httpWithToken } from "../http/http";
 
 
 export default function Cart(){
     useAuthGuard()
     
-    const [cartItems, setCartItems] = useState([
-        { id: 1, name: 'Product 1', price: 19.99, quantity: 2 },
-        { id: 2, name: 'Product 2', price: 29.99, quantity: 1 },
-    ]);
+    const dispatch = useDispatch()
+    const {cartProducts} = useSelector(state => state.cartSlice)
+    const {changeQuantity, setCart} = cartSlice.actions
+
+    useEffect(() => {
+        const fetchCart = async() => {
+            const data = (await httpWithToken.get('/api/cart')).data
+            dispatch(setCart(data.map(proudct => ({...proudct, quantity: 1}))))
+        }
+        fetchCart()
+    }, [])
+
+    const handleChangeQuantity = (product, value) => {
+        dispatch(changeQuantity({quantity: value, product}))
+    }
+
+    
 
     return (
         <div className="cart page">
@@ -20,7 +36,7 @@ export default function Cart(){
                 <h1 className="cart-title mb-4">Корзина</h1>
                 <Row>
                     <Col xs={8} className="cart-list d-flex flex-column gap-5">
-                        {cartItems.map(product => <Card className="cart-item">
+                        {cartProducts.map(product => <Card className="cart-item">
                             <Card.Header>{product.name}</Card.Header>
                             <Card.Body className="cart-itemBody d-flex justify-content-between align-items-center">
                                 <div className="d-flex align-items-baseline gap-3">
@@ -29,8 +45,8 @@ export default function Cart(){
                                         className="cart-inputNumber"
                                         type="number"
                                         value={product.quantity}
-                                        onChange={() => {
-
+                                        onChange={(event) => {
+                                            handleChangeQuantity(product, +event.target.value)
                                         }}
                                     />
                                 </div>
@@ -42,12 +58,15 @@ export default function Cart(){
                         <h2 className="mb-4">Итого:</h2>
                         <div className="overall-property mb-2 d-flex justify-content-between">
                             <p>Количество товаров:</p>
-                            <p>{cartItems.reduce((acc, curr) => acc + curr.quantity, 0)} шт.</p>
+                            <p>{cartProducts.reduce((acc, curr) => acc + curr.quantity, 0)} шт.</p>
                         </div>
                         <div className="overall-property mb-2 d-flex justify-content-between">
                             <p>Стоимость:</p>
-                            <p>{cartItems.reduce((acc, curr) => acc + curr.quantity * curr.price, 0)} &#8381;</p>
+                            <p>{cartProducts.reduce((acc, curr) => acc + curr.quantity * curr.price, 0)} &#8381;</p>
                         </div>
+                        <Button className="mt-3" onClick={() => {}}>
+                            Заказать
+                        </Button>
                     </Col>
                 </Row>
             </Container>

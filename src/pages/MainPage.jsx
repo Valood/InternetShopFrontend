@@ -4,10 +4,11 @@ import "./MainPage.scss";
 import { useContext, useEffect, useMemo, useState } from "react";
 import { ToastContext } from "../context/ToastProvider";
 import useAuthGuard from "../hooks/useAuthGuard";
-import { http } from "../http/http";
+import { http, httpWithToken } from "../http/http";
 import { useDispatch, useSelector } from "react-redux";
 import { productSlice } from "../store/Reducers/productReducer";
 import { useNavigate } from "react-router";
+import { cartSlice } from '../store/Reducers/cartSlice';
 
 export default function MainPage() {
   useAuthGuard();
@@ -16,6 +17,7 @@ export default function MainPage() {
   const dispatch = useDispatch();
   const { products } = useSelector((state) => state.productSlice);
   const { setProducts } = productSlice.actions;
+  const {addToCart} = cartSlice.actions
 
   const [filters, setFilters] = useState({
     name: null,
@@ -37,7 +39,9 @@ export default function MainPage() {
     [filters, products]
   );
 
-  const handleAddToCart = (product) => {
+  const handleAddToCart = async(product) => {
+    dispatch(addToCart({...product, quantity: 1}))
+    await httpWithToken.post('/api/cart', {product: product.id})
     handleSuccessAction("Добавлено в корзину");
   };
 
