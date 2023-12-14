@@ -5,6 +5,7 @@ import './Cart.scss'
 import useAuthGuard from "../hooks/useAuthGuard";
 import { useDispatch, useSelector } from "react-redux";
 import {cartSlice} from "../store/Reducers/cartSlice";
+import {historySlice} from '../store/Reducers/historySlice'
 import { httpWithToken } from "../http/http";
 
 
@@ -13,7 +14,8 @@ export default function Cart(){
     
     const dispatch = useDispatch()
     const {cartProducts} = useSelector(state => state.cartSlice)
-    const {changeQuantity, setCart} = cartSlice.actions
+    const {changeQuantity, setCart, clearCart} = cartSlice.actions
+    const {addOrderToHistory} = historySlice.actions
 
     useEffect(() => {
         const fetchCart = async() => {
@@ -27,7 +29,12 @@ export default function Cart(){
         dispatch(changeQuantity({quantity: value, product}))
     }
 
-    
+    const handleSendOrder = async() => {
+        const order = {products: cartProducts.map(product => product.id)}
+        dispatch(addOrderToHistory(order))
+        dispatch(clearCart())
+        await httpWithToken.post('/api/order', order)
+    }
 
     return (
         <div className="cart page">
@@ -64,7 +71,7 @@ export default function Cart(){
                             <p>Стоимость:</p>
                             <p>{cartProducts.reduce((acc, curr) => acc + curr.quantity * curr.price, 0)} &#8381;</p>
                         </div>
-                        <Button className="mt-3" onClick={() => {}}>
+                        <Button className="mt-3" onClick={handleSendOrder}>
                             Заказать
                         </Button>
                     </Col>

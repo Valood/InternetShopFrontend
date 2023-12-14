@@ -9,7 +9,6 @@ export const cartSlice = createSlice({
     initialState,
     reducers: {
         setCart(state, {payload}){
-            console.log(payload);
             state.cartProducts = payload
         },
         addToCart(state, {payload}){
@@ -20,6 +19,9 @@ export const cartSlice = createSlice({
             const productIndex = cartCopy.findIndex(cartProduct => cartProduct.id === payload.product.id)
             cartCopy[productIndex] = {...payload.product, quantity: payload.quantity} 
             state.cartProducts = cartCopy
+        },
+        clearCart(state){
+            state.cartProducts = []
         }
     }
 })
