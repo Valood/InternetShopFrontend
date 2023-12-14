@@ -13,6 +13,7 @@ export default function OrdersHistory() {
   const { setHistory } = historySlice.actions
   const { history } = useSelector(state => state.historySlice)
   const dispatch = useDispatch()
+  const navigate = useNavigate()
 
   useEffect(() => {
     const fetchHistory = async () => {
@@ -22,14 +23,14 @@ export default function OrdersHistory() {
     fetchHistory()
   }, [])
 
-  function onModalOpen() {
-    setModalShow(true);
+  function onModalOpen(id) {
+    setModalShow(id);
   }
 
   return (
     <div className="main page">
       <CustomNavbar />
-      <ModalReview modalShow={modalShow} setModalShow={setModalShow} />
+      <ModalReview modalShow={!!modalShow} setModalShow={setModalShow} productId={modalShow} />
       <Container className="mt-5">
         <Row>
           <Col md={3} xs={4}></Col>
@@ -44,12 +45,14 @@ export default function OrdersHistory() {
                       <Card.Text>Цена: {e.price} &#8381;</Card.Text>
                       <Card.Text>{e.description}</Card.Text>
                       <Card.Text>Дата: {product.date}</Card.Text>
-                      <Button variant="primary" onClick={() => { }}>
+                      <Button variant="primary" onClick={() => {
+                        navigate(`/product/${e.id}`)
+                      }}>
                         Подробнее
                       </Button>
-                      <Button className="ms-2" variant="primary" onClick={onModalOpen}>
-                      Оставить отзыв
-                    </Button>
+                      <Button className="ms-2" variant="primary" onClick={() => onModalOpen(e.id)}>
+                        Оставить отзыв
+                      </Button>
                     </div>)}
 
                   </Card.Body>
@@ -66,12 +69,14 @@ export default function OrdersHistory() {
 import React, { useState } from "react";
 import Modal from "react-bootstrap/Modal";
 import Form from "react-bootstrap/Form";
+import { useNavigate } from "react-router-dom";
 
-function ModalReview({ modalShow, setModalShow }) {
-  // eslint-disable-next-line
-  const [review, setReview] = useState("");
+function ModalReview({ modalShow, setModalShow, productId }) {
+  const [rating, setRating] = useState(1)
+  const [review, setReview] = useState();
 
   const onSubmit = async () => {
+    await httpWithToken.post('/api/product/comment', {product: productId, message: review, rating:rating})
     setModalShow(false);
   };
 
@@ -87,6 +92,22 @@ function ModalReview({ modalShow, setModalShow }) {
               onChange={(e) => setReview(e.target.value)}
               as="textarea"
               placeholder="Расскажите ваши впечатления"
+            />
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Control
+              type="number"
+              onChange={(e) => {
+                console.log(e.target.value  );
+                if(e.target.value > 10){
+                  setRating(10)
+                  return
+                }
+                setRating(e.target.value)
+              }}
+              placeholder="Поставьте оценку"
+              value={rating}
             />
           </Form.Group>
 

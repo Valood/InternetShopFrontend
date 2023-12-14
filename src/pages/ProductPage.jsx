@@ -1,16 +1,28 @@
 import { Nav, Card, Button, Container, Row, Col } from "react-bootstrap";
 import { CustomNavbar } from "../components/CustomNavbar";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { ToastContext } from "../context/ToastProvider";
 import useAuthGuard from "../hooks/useAuthGuard";
 import { useParams } from "react-router";
+import {httpWithToken} from "../http/http"
 
 export default function ProductPage() {
   useAuthGuard();
 
   const { handleSuccessAction } = useContext(ToastContext);
-  const products = [{ id: 1, name: "Название", price: 19.99 }];
+  const [product, setProduct] = useState({})
+  const [comments, setComments] = useState([])
   const { id } = useParams();
+
+  useEffect(()=>{
+    const fetchData = async() => {
+      const a = await httpWithToken.get(`/api/product/${id}`)
+      setProduct(a.data)
+      const b = await httpWithToken.get(`/api/product/${id}/comments`)
+      setComments(b.data)
+    }
+    fetchData()
+  },[])
 
   const handleAddToCart = (product) => {
     handleSuccessAction("Добавлено в корзину");
@@ -22,15 +34,16 @@ export default function ProductPage() {
       <Container className="products mt-5">
         <Row className="mb-5">
           <Col md={3} xs={4}>
-            {/* <img src={product?.image} /> */}
+            <img src={product?.image} style={{objectFit:'cover'}} width={200} />
           </Col>
           <Col md={9} xs={8}>
-            {products.map((product) => (
+            {[product].map((product) => (
               <Card key={product.id} className="">
                 <Card.Body>
                   <Card.Title>{product.name}</Card.Title>
-                  <Card.Text>Price: ${product.price}</Card.Text>
-                  <Card.Text>Описание: ${product.price}</Card.Text>
+                  <Card.Text>Цена: {product.price}</Card.Text>
+                  <Card.Text>Описание: {product.description}</Card.Text>
+                  <Card.Text>Рейтинг товара: {product.rating} из 10</Card.Text>
                   <Button variant="primary" onClick={() => handleAddToCart(product)}>
                     Добавить в корзину
                   </Button>
@@ -41,10 +54,7 @@ export default function ProductPage() {
         </Row>
         <h2>Комментарии</h2>
         <Comment
-          reviews={[
-            { name: "Имя", surname: "Фамилия", reviews: "Комментарий" },
-            { name: "123", surname: "456", reviews: "222" },
-          ]}
+          reviews={comments}
         />
       </Container>
     </div>
@@ -67,11 +77,11 @@ function Comment({ reviews }) {
       )}
       {reviews.map((e, i) => (
         <Card key={i} className="mb-4">
-          <Card.Header>{e.name + " " + e.surname}</Card.Header>
+          <Card.Header>{e.name}</Card.Header>
           <Card.Body>
             <blockquote className="blockquote mb-0">
               <p> </p>
-              <footer className="blockquote-footer">{e.reviews}</footer>
+              <footer className="blockquote-footer">{e.message}</footer>
             </blockquote>
           </Card.Body>
         </Card>
